@@ -1,34 +1,24 @@
 import sys
-sys.path.append(".")
+sys.path.append("/usr/local/lib/python2.7/site-packages")
 import os
-import secret
 from time import sleep
-
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
-
+from fbcontroller import FBController
 
 class FBCrawler:
     def __init__(self, email, password):
 
         # init
         #self.browser = webdriver.Firefox()#port=5566, service_log_path="./syslog")
-        self.browser = webdriver.Chrome()
-        self._login(email, password)
-        
 
-    def _login(self, username, password):
-        self.browser.get("https://www.facebook.com/")
-        input_box = self.browser.find_element_by_name("email")
-        input_box.send_keys(username)
-        input_box = self.browser.find_element_by_name("pass")
-        input_box.send_keys(password)
-        loginButton = self.browser.find_element_by_id("loginbutton")
-        loginButton.click()
+        self.browser = webdriver.Chrome()
+        self.fbControl = FBController(self.browser)
+        self.fbControl.Login(email, password)
 
     def CrawlGroup(self, url, GroupName):
-        self.browser.get(url)
+        self.fbControl.GoToPage(url)
 
         posts = self.browser.find_elements_by_class_name("userContentWrapper")
         # scroll to target date
@@ -37,12 +27,12 @@ class FBCrawler:
 
             # find last 3 post in 2014 then stop
             for i in range(3):
-                time = self._getPostTime(posts[-i]).find("2014")
+                time = self._getPostTime(posts[-i]).find("2015")
                 if time == -1: break
             else:
                 break
 
-            ActionChains(self.browser).send_keys("j").send_keys("j").send_keys("j").send_keys("j").send_keys("j").perform()
+            self.fbControl.ScrollDown(5)
             sleep(1)
         
         # mkdir for save result
@@ -50,9 +40,6 @@ class FBCrawler:
             os.mkdir(GroupName)
         except OSError: pass
         os.chdir(GroupName)
-
-        # report
-        rf = open("log", "w")
 
         idx = 0
         # all results in posts
@@ -70,8 +57,6 @@ class FBCrawler:
                         assert idx == 0
                         break
                 except StaleElementReferenceException:
-                    # report
-                    rf.writelines(["post %d selenium.common.exceptions.StaleElementReferenceException"%(idx,)])
                     break
                     
 
@@ -83,8 +68,6 @@ class FBCrawler:
             f.write(post.get_attribute("outerHTML").encode("utf-8"))
             f.close()
             idx += 1
-
-            rf.close()
 
         os.chdir("..")
 
