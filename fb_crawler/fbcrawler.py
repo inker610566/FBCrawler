@@ -11,9 +11,9 @@ class FBCrawler:
     def __init__(self, email, password):
 
         # init
-        #self.browser = webdriver.Firefox()#port=5566, service_log_path="./syslog")
+        self.browser = webdriver.Firefox()#port=5566, service_log_path="./syslog")
 
-        self.browser = webdriver.Chrome()
+        #self.browser = webdriver.Chrome()
         self.fbControl = FBController(self.browser)
         self.fbControl.Login(email, password)
 
@@ -27,7 +27,7 @@ class FBCrawler:
 
             # find last 3 post in 2014 then stop
             for i in range(3):
-                time = self._getPostTime(posts[-i]).find("2015")
+                time = self._getPostTime(posts[-i]).find("3")
                 if time == -1: break
             else:
                 break
@@ -45,9 +45,10 @@ class FBCrawler:
         # all results in posts
         for post in posts:
 
+            print idx
             # expand all reply in post
             while True:
-                icons = post.find_elements_by_class_name("UFIPagerIcon");
+                icons = post.find_elements_by_class_name("UFIPagerLink");
                 if not icons: break
                 assert len(icons) == 1
                     
