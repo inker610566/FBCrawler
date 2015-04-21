@@ -20,8 +20,8 @@ class FBCrawler:
     def CrawlGroup(self, url, GroupName):
         self.fbControl.GoToPage(url)
 
+        self._log("Scroll to target date")
         posts = self.browser.find_elements_by_class_name("userContentWrapper")
-        # scroll to target date
         while True:
             posts = self.browser.find_elements_by_class_name("userContentWrapper")
 
@@ -32,10 +32,11 @@ class FBCrawler:
             else:
                 break
 
+            self._log("ScrollDown")
             self.fbControl.ScrollDown(5)
             sleep(1)
         
-        # mkdir for save result
+        self._log("mkdir for save result")
         try:
             os.mkdir(GroupName)
         except OSError: pass
@@ -45,7 +46,7 @@ class FBCrawler:
         # all results in posts
         for post in posts:
 
-            print idx
+            self._log("saving post %d" % (idx,))
             # expand all reply in post
             while True:
                 icons = post.find_elements_by_class_name("UFIPagerLink");
@@ -84,6 +85,9 @@ class FBCrawler:
         '''
         time = div.find_element_by_tag_name("abbr").text
         return time
+
+    def _log(self, msg):
+        print time.strftime("[%H:%M:%S]") + msg
 
 
 if __name__ == "__main__":
