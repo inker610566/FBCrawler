@@ -7,6 +7,7 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import UnexpectedAlertPresentException
 
 
 class FBController:
@@ -33,6 +34,12 @@ class FBController:
         assert steps >= 0
         ac = ActionChains(self.browser)
         for _ in range(steps):
-                ac = ac.send_keys("j")
-        ac.perform()
+            ac = ac.send_keys("j")
+        while True:
+            try:
+                ac.perform()
+                break
+            except UnexpectedAlertPresentException:
+                sleep(5)
+
 
