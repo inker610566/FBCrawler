@@ -59,11 +59,16 @@ class FBCrawler:
                         break
                 except StaleElementReferenceException:
                     break
-                    
-
 
                 icons[0].click()
                 sleep(1)
+
+            # expand all "view more" in reply
+            while True:
+                buttons = post.find_elements_by_class_name("fss");
+                if not buttons: break
+                for button in buttons:
+                    button.click()
 
             f = open("%09d.html" %(idx,), "w")
             f.write(post.get_attribute("outerHTML").encode("utf-8"))
