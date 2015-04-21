@@ -2,6 +2,7 @@ import sys
 sys.path.append("/usr/local/lib/python2.7/site-packages")
 import os
 from time import sleep
+from time import strftime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
@@ -87,7 +88,7 @@ class FBCrawler:
         return time
 
     def _log(self, msg):
-        print time.strftime("[%H:%M:%S]") + msg
+        print strftime("[%H:%M:%S]") + msg
 
 
 if __name__ == "__main__":
