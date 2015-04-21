@@ -6,6 +6,7 @@ from time import strftime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from fbcontroller import FBController
 
 class FBCrawler:
@@ -17,7 +18,10 @@ class FBCrawler:
 
         #self.browser = webdriver.Chrome()
         self.fbControl = FBController(self.browser)
-        self.fbControl.Login(email, password)
+        try:
+            self.fbControl.Login(email, password)
+        except TimeoutException:
+            self._log("Login timeout")
 
     def CrawlGroup(self, url, GroupName):
         self.fbControl.GoToPage(url)
@@ -35,7 +39,10 @@ class FBCrawler:
                 break
 
             self._log("ScrollDown")
-            self.fbControl.ScrollDown(5)
+            try:
+                self.fbControl.ScrollDown(5)
+            except TimeoutException:
+                self._log("Timeout")
             sleep(1)
         
         self._log("mkdir for save result")
