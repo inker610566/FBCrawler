@@ -48,7 +48,8 @@ class FBCrawler:
         self._log("mkdir for save result")
         try:
             os.mkdir(GroupName)
-    except OSError: pass
+        except OSError:
+            pass
         os.chdir(GroupName)
 
         idx = 0
