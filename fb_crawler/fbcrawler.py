@@ -27,7 +27,7 @@ class FBCrawler:
 
             # find last 3 post in 2014 then stop
             for i in range(3):
-                time = self._getPostTime(posts[-i]).find("3")
+                time = self._getPostTime(posts[-i]).find("2014")
                 if time == -1: break
             else:
                 break
