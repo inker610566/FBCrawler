@@ -13,6 +13,7 @@ class FBCrawler:
 
         # init
         self.browser = webdriver.Firefox()#port=5566, service_log_path="./syslog")
+        self.browser.set_page_load_timeout(10)
 
         #self.browser = webdriver.Chrome()
         self.fbControl = FBController(self.browser)
