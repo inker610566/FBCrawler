@@ -10,7 +10,7 @@ from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
 
-class FBController:
+class FBController(object):
     def __init__(self, browser):
         '''
                 @param browser: selenium webdriver instance
