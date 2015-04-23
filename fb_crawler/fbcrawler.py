@@ -30,13 +30,13 @@ class FBCrawler:
             if not icons: break
             assert len(icons) == 1
                 
-            # check if visible
-            #try:
-            #    if not icons[0].is_displayed():
-            #        assert idx == 0
-            #        break
-            #except StaleElementReferenceException:
-            #    break
+             check if visible
+            try:
+                if not icons[0].is_displayed():
+                    assert idx == 0
+                    break
+            except StaleElementReferenceException:
+                break
 
             icons[0].click()
             sleep(1)
