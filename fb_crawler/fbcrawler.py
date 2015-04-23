@@ -23,13 +23,54 @@ class FBCrawler:
         except TimeoutException:
             self._log("Login timeout")
 
+    def _crawlPost(self, post, saveName):
+        # expand all reply in post
+        while True:
+            icons = post.find_elements_by_class_name("UFIPagerLink");
+            if not icons: break
+            assert len(icons) == 1
+                
+            # check if visible
+            try:
+                if not icons[0].is_displayed():
+                    assert idx == 0
+                    break
+            except StaleElementReferenceException:
+                break
+
+            icons[0].click()
+            sleep(1)
+
+        # expand all "view more" in reply
+        while True:
+            buttons = post.find_elements_by_class_name("fss");
+            if not buttons: break
+            for button in buttons:
+                button.click()
+
+        f = open("%09d.html" %(idx,), "w")
+        f.write(post.get_attribute("outerHTML").encode("utf-8"))
+        f.close()
+
+
     def CrawlGroup(self, url, GroupName):
         self.fbControl.GoToPage(url)
 
-        self._log("Scroll to target date")
-        posts = self.browser.find_elements_by_class_name("userContentWrapper")
+        self._log("mkdir for save result")
+        try:
+            os.mkdir(GroupName)
+        except OSError:
+            pass
+        os.chdir(GroupName)
+
+        idx = -1
         while True:
             posts = self.browser.find_elements_by_class_name("userContentWrapper")
+
+            # save posts
+            for idx in range(idx+1, len(posts)):
+                self._log("saving post %d" % (idx,))
+                self._crawlPost(posts[idx], "%09d.html" %(idx,))
 
             # find last 3 post in 2014 then stop
             for i in range(3):
@@ -45,47 +86,6 @@ class FBCrawler:
             except TimeoutException:
                 self._log("Timeout")
             sleep(1)
-        
-        self._log("mkdir for save result")
-        try:
-            os.mkdir(GroupName)
-        except OSError:
-            pass
-        os.chdir(GroupName)
-
-        idx = 0
-        # all results in posts
-        for post in posts:
-
-            self._log("saving post %d" % (idx,))
-            # expand all reply in post
-            while True:
-                icons = post.find_elements_by_class_name("UFIPagerLink");
-                if not icons: break
-                assert len(icons) == 1
-                    
-                # check if visible
-                try:
-                    if not icons[0].is_displayed():
-                        assert idx == 0
-                        break
-                except StaleElementReferenceException:
-                    break
-
-                icons[0].click()
-                sleep(1)
-
-            # expand all "view more" in reply
-            while True:
-                buttons = post.find_elements_by_class_name("fss");
-                if not buttons: break
-                for button in buttons:
-                    button.click()
-
-            f = open("%09d.html" %(idx,), "w")
-            f.write(post.get_attribute("outerHTML").encode("utf-8"))
-            f.close()
-            idx += 1
 
         os.chdir("..")
 
