@@ -31,12 +31,12 @@ class FBCrawler:
             assert len(icons) == 1
                 
             # check if visible
-            try:
-                if not icons[0].is_displayed():
-                    assert idx == 0
-                    break
-            except StaleElementReferenceException:
-                break
+            #try:
+            #    if not icons[0].is_displayed():
+            #        assert idx == 0
+            #        break
+            #except StaleElementReferenceException:
+            #    break
 
             icons[0].click()
             sleep(1)
@@ -48,7 +48,7 @@ class FBCrawler:
             for button in buttons:
                 button.click()
 
-        f = open("%09d.html" %(idx,), "w")
+        f = open(saveName, "w")
         f.write(post.get_attribute("outerHTML").encode("utf-8"))
         f.close()
 
