@@ -1,7 +1,9 @@
+from fbcontroller import FBController
 from time import sleep
 
-def GroupPageController(FBController):
+class GroupPageController(FBController):
     def __init__(self, browser):
+        print "OK"
         super(GroupPageController, self).__init__(browser)
         self.rewind()
 
@@ -12,7 +14,7 @@ def GroupPageController(FBController):
     def getNextPost(self):
         self.post_index += 1
         while self.post_index >= len(self.posts):
-            self.fbControl.ScrollDown(5)
+            self.ScrollDown(5)
             sleep(2)
             self._updatePosts()
 

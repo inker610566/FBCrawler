@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.common.exceptions import TimeoutException
-from fbcontroller import FBController
+from grouppagecontroller import GroupPageController
 
 class FBCrawler:
     def __init__(self, email, password):
@@ -17,7 +17,7 @@ class FBCrawler:
         #self.browser.set_page_load_timeout(10)
 
         #self.browser = webdriver.Chrome()
-        self.fbControl= GroupPageController(self.browser)
+        self.fbControl = GroupPageController(self.browser)
         try:
             self.fbControl.Login(email, password)
         except TimeoutException:
