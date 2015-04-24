@@ -21,6 +21,7 @@ class GroupPageController(FBController):
         post = self.posts[self.post_index]
         self._expandReply(post)
         self._expandViewMore(post)
+        return post
 
     def getLastThreePost(self):
         return tuple(self.posts[-1:-4:-1])
