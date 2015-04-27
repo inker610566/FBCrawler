@@ -6,7 +6,7 @@ from time import strftime
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from grouppagecontroller import GroupPageController
 
 class FBCrawler:
@@ -63,7 +63,15 @@ class FBCrawler:
         '''
             @param div userContentWrapper
         '''
-        time = div.find_element_by_tag_name("abbr").text
+        retry = 3
+        while True:
+            try:
+                time = div.find_element_by_tag_name("abbr").text
+                break
+            except NoSuchElementException as e:
+                retry -= 1
+                if retry <= 0: raise e
+                sleep(1)
         return time
 
     def _log(self, msg):
