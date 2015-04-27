@@ -30,6 +30,12 @@ class GroupPageController(FBController):
         self.posts = self.browser.find_elements_by_class_name("userContentWrapper")
         
     def _expandReply(self, post):
+        reply_link = post.find_elements_by_class_name("comment_link")
+        if reply_link:
+            assert len(reply_link) == 1
+            reply_link[0].click()
+            sleep(1)
+
         while True:
             icons = post.find_elements_by_class_name("UFIPagerLink");
             if not icons: break
