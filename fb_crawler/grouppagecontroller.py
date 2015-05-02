@@ -19,6 +19,7 @@ class GroupPageController(FBController):
             self._updatePosts()
 
         post = self.posts[self.post_index]
+        self._expandSeeMore(post)
         self._expandReply(post)
         self._expandViewMore(post)
         return post
@@ -28,6 +29,10 @@ class GroupPageController(FBController):
 
     def _updatePosts(self):
         self.posts = self.browser.find_elements_by_class_name("userContentWrapper")
+
+    def _expandSeeMore(self, post):
+        link = post.find_elements_by_class_name("see_more_link")
+        if link: link[0].click()
         
     def _expandReply(self, post):
         reply_link = post.find_elements_by_class_name("comment_link")
