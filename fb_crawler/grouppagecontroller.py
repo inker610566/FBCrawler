@@ -1,5 +1,6 @@
 from fbcontroller import FBController
 from time import sleep
+from selenium.common.exceptions import ElementNotVisibleException
 
 class GroupPageController(FBController):
     def __init__(self, browser):
@@ -32,7 +33,16 @@ class GroupPageController(FBController):
 
     def _expandSeeMore(self, post):
         link = post.find_elements_by_class_name("see_more_link")
-        if link: link[0].click()
+        if link:
+            while True:
+                try:
+                    link[0].click()
+                    break
+                except ElementNotVisibleException:
+                    print "_expandSeeMore ElementNotVisibleException exception"
+                sleep(5)
+
+
         
     def _expandReply(self, post):
         reply_link = post.find_elements_by_class_name("comment_link")
