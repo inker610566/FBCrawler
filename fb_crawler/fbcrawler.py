@@ -50,29 +50,13 @@ class FBCrawler:
 
             # find last 3 post in 2014 then stop
             for post in self.fbControl.getLastThreePost():
-                time = self._getPostTime(post)
+                time = self.fbControl.getPostTime(post)
                 self._log(time)
                 if time.find("2014") == -1: break
             else:
                 break
 
         os.chdir("..")
-
-
-    def _getPostTime(self, div):
-        '''
-            @param div userContentWrapper
-        '''
-        retry = 3
-        while True:
-            try:
-                time = div.find_element_by_tag_name("abbr").text
-                break
-            except NoSuchElementException as e:
-                retry -= 1
-                if retry <= 0: raise e
-                sleep(1)
-        return time
 
     def _log(self, msg):
         print strftime("[%H:%M:%S]") + msg

@@ -42,4 +42,12 @@ class FBController(object):
             except UnexpectedAlertPresentException:
                 sleep(5)
 
+    def getPostTime(self, post):
+        '''
+            @param div userContentWrapper
+        '''
+        time = post.find_element_by_tag_name("abbr").text
+        return time
+
+
 
