@@ -32,15 +32,15 @@ class GroupPageController(FBController):
         self.posts = self.browser.find_elements_by_class_name("userContentWrapper")
 
     def _expandSeeMore(self, post):
-        link = post.find_elements_by_class_name("see_more_link")
-        if link:
-            while True:
-                try:
-                    link[0].click()
-                    break
-                except ElementNotVisibleException:
-                    print "_expandSeeMore ElementNotVisibleException exception"
-                sleep(5)
+        while True:
+            link = post.find_elements_by_class_name("see_more_link")
+            try:
+                if link: link[0].click()
+                break
+            except ElementNotVisibleException:
+                print "_expandSeeMore ElementNotVisibleException exception"
+                print self.getPostTime(post)
+            sleep(5)
 
 
         
