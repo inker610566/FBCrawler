@@ -1,6 +1,7 @@
 from fbcontroller import FBController
 from time import sleep
 from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import StaleElementReferenceException
 
 class GroupPageController(FBController):
     def __init__(self, browser):
@@ -55,10 +56,13 @@ class GroupPageController(FBController):
             if not icons: break
             assert len(icons) == 1
                 
-            # check if visible
-            if not icons[0].is_displayed(): break
+            try:
+                # check if visible
+                if not icons[0].is_displayed(): break
 
-            icons[0].click()
+                icons[0].click()
+            except StaleElementReferenceException:
+                print "StaleElementReferenceException"
             sleep(1)
 
     def _expandViewMore(self, post):
