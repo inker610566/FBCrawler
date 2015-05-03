@@ -38,8 +38,7 @@ class GroupPageController(FBController):
                 if link: link[0].click()
                 break
             except ElementNotVisibleException:
-                print "_expandSeeMore ElementNotVisibleException exception"
-                print self.getPostTime(post)
+                break
             sleep(5)
 
 

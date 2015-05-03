@@ -42,7 +42,8 @@ class FBController(object):
             except UnexpectedAlertPresentException:
                 sleep(5)
 
-    def getPostTime(self, post):
+    @staticmethod
+    def getPostTime(post):
         '''
             @param div userContentWrapper
         '''
