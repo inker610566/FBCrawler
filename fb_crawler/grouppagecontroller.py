@@ -76,7 +76,11 @@ class GroupPageController(FBController):
 
     def _expandViewMore(self, post):
         while True:
-            buttons = post.find_elements_by_class_name("fss");
+            try:
+                buttons = post.find_elements_by_class_name("fss");
+            except StaleElementReferenceException:
+                print "StaleElementReferenceException"
+                break
             if not buttons: break
             for button in buttons:
                 button.click()
