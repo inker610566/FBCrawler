@@ -42,14 +42,15 @@ class GroupPageController(FBController):
                 break
             sleep(5)
 
-
-        
     def _expandReply(self, post):
-        reply_link = post.find_elements_by_class_name("comment_link")
-        if reply_link:
-            assert len(reply_link) == 1
-            reply_link[0].click()
-            sleep(1)
+        try:
+            reply_link = post.find_elements_by_class_name("comment_link")
+            if reply_link:
+                assert len(reply_link) == 1
+                reply_link[0].click()
+                sleep(1)
+        except StaleElementReferenceException:
+            pass
 
         while True:
             icons = post.find_elements_by_class_name("UFIPagerLink");
