@@ -34,7 +34,11 @@ class GroupPageController(FBController):
 
     def _expandSeeMore(self, post):
         while True:
-            link = post.find_elements_by_class_name("see_more_link")
+            try:
+                link = post.find_elements_by_class_name("see_more_link")
+            except StaleElementReferenceException:
+                print "StaleElementReferenceException"
+                break
             try:
                 if link: link[0].click()
                 break
