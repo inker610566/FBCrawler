@@ -53,11 +53,11 @@ class GroupPageController(FBController):
             pass
 
         while True:
-            icons = post.find_elements_by_class_name("UFIPagerLink");
-            if not icons: break
-            assert len(icons) == 1
-                
             try:
+                icons = post.find_elements_by_class_name("UFIPagerLink");
+                if not icons: break
+                assert len(icons) == 1
+                
                 # check if visible
                 if not icons[0].is_displayed(): break
 
